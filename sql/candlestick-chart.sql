@@ -42,3 +42,13 @@ Must be ordered by `date asc`
 */
 
 
+
+SELECT 
+  TO_TIMESTAMP(FLOOR((EXTRACT('epoch' from createdAt) / 300 )) * 300) as date,
+  MAX(price) as high,
+  MIN(price) as low,
+  MAX(price) as open,
+  MAX(price) as close
+FROM market_data
+GROUP BY date
+ORDER BY date ASC;
