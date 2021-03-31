@@ -12,7 +12,7 @@ function createTree() {
 }
 
 function createNode(symbol) {
-  return { type: "node", symbol };
+  return { type: "node", symbol, left: createTree(), right: createTree() };
 }
 
 function createLeaf(value) {
@@ -21,9 +21,9 @@ function createLeaf(value) {
 
 function rightFirstInsert(tree, node) {
   if (tree.type === "init") {
-    tree.type = node.type;
-    tree.value = node.value;
-    tree.symbol = node.symbol;
+    for (let key in node) {
+      tree[key] = node[key];
+    }
     return true;
   }
 
@@ -31,25 +31,9 @@ function rightFirstInsert(tree, node) {
     return false;
   }
 
-  if (!tree.right) {
-    tree.right = node;
-    return true;
-  }
-
-  if (rightFirstInsert(tree.right, node)) {
-    return true;
-  }
-
-  if (!tree.left) {
-    tree.left = node;
-    return true;
-  }
-
-  if (rightFirstInsert(tree.left, node)) {
-    return true;
-  }
-
-  return false;
+  return (
+    rightFirstInsert(tree.right, node) || rightFirstInsert(tree.left, node)
+  );
 }
 
 function toNormalNotation(tree) {
